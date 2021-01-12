@@ -35,14 +35,17 @@ Now head back to GitHub. Go to your fork of the bioconda-recipes repository and 
 # Push to my github
 
 ```bash
+# Create a new repository on the command line
 git init
 git add --all
-git commit -m "push"
-#git remote rm origin
-git remote set-url --add origin git@github.com:Wiselab2/NGPINT.git
+git commit -m "first commit"
+git branch -M main
 git remote add origin https://github.com/Wiselab2/NGPINT.git
-#git remote add upstream https://github.com/Wiselab2/NGPINT.git
-git remote -v
+git push -u origin main
+
+# Push an existing repository from the command line
+git remote add origin https://github.com/Wiselab2/NGPINT.git
+git branch -M main
 git push -u origin main
 ```
 
