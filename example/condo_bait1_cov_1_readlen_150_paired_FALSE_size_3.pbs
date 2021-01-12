@@ -1,0 +1,35 @@
+#!/bin/bash
+
+#SBATCH --nodes=1 # request one node
+#SBATCH --ntasks-per-node=1  # ask for 16 cpus
+#SBATCH --mem=100G # Maximum amount of memory this job will be given, try to estimate this to the best of your ability. This asks for 128 GB of ram.
+#SBATCH --time=100:00:00
+    
+# everything below this line is optional, but are nice to have quality of life things
+#SBATCH --output=Y2H_simulations.output # tell it to store the output console text to a file called job.<assigned job number>.out
+#SBATCH --error=Y2H_simulations.error # tell it to store the error messages from the program (if it doesn't write them to normal console output) to a file called job.<assigned job muber>.err
+#SBATCH --job-name=bait1_1_150_FALSE_3 # a nice readable name to give your job so you know what it is when you see it in the queue, instead of just numbers
+#SBATCH --mail-user=sagnik@iastate.edu   # email address
+#SBATCH --mail-type=BEGIN
+#SBATCH --mail-type=END
+#SBATCH --mail-type=FAIL
+    
+# under this we just do what we would normally do to run the program, everything above this line is used by slurm to tell it what your job needs for resources
+module purge
+module load trimmomatic
+module load star
+module load gcc/7.3.0-xegsmw4
+module load salmon
+module load r
+module load r-dplyr
+module load r-deseq2
+module load py-biopython/1.70-py3-wos466g
+module load cufflinks
+module load python
+
+module load py-scipy/1.1.0-py3-zfiwiow
+module load py-numpy/1.15.2-py3-i2pxd4u
+module load py-matplotlib/3.0.0-py3-xr6eijv
+    
+nohup python /work/LAS/rpwise-lab/sagnik/y2h/find_y2h_seq_candidates_v1dot5.py -a /work/LAS/rpwise-lab/sagnik/y2h_seq_reads_simulator/pbs_scripts/bait1_cov_1_readlen_150_paired_FALSE_size_3.csv  > /work/LAS/rpwise-lab/sagnik/y2h_seq_reads_simulator/simulated_reads/bait1_cov_1_readlen_150_paired_FALSE_size_3.output 2> /work/LAS/rpwise-lab/sagnik/y2h_seq_reads_simulator/simulated_reads/bait1_cov_1_readlen_150_paired_FALSE_size_3.error &
+nohup python  /work/LAS/rpwise-lab/sagnik/y2h_seq_reads_simulator/find_junction_reads_and_in_frame_recognized_by_pipeline.py  /work/LAS/rpwise-lab/sagnik/y2h_seq_reads_simulator/pbs_scripts/bait1_cov_1_readlen_150_paired_FALSE_size_3.csv  > /work/LAS/rpwise-lab/sagnik/y2h_seq_reads_simulator/pbs_scripts/bait1_cov_1_readlen_150_paired_FALSE_size_3.output  2> /work/LAS/rpwise-lab/sagnik/y2h_seq_reads_simulator/pbs_scripts/bait1_cov_1_readlen_150_paired_FALSE_size_3.error  & 
