@@ -8,7 +8,7 @@ Here we write upgrading notes for `NGPINT`. It's an effort to make them as strai
 
 ### Added
 
-- 
+- `ngpint` can now work with gzipped fastq files
 
 ### Changed
 
@@ -36,7 +36,7 @@ Here we write upgrading notes for `NGPINT`. It's an effort to make them as strai
 
 
 
-## [1.0.0] - 2020-10-06
+## [1.0.0] - 2021-01-11
 
 * First release of `NGPINT`
 
