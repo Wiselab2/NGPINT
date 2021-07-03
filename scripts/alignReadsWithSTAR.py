@@ -6,6 +6,10 @@ def alignReadsWithStarForTrimming(options,logger_proxy,logging_mutex):
     Aligns the untrimmed reads to genome and also generates the 
     mappings to transcriptome
     """
+    cmd  = f"STAR "
+    cmd += f" --genomeLoad Remove "
+    os.system(cmd)
+    
     for num,eachtype in enumerate([options.selected_sample_N_removed,options.background_sample_N_removed]):
         for file_num,filename in enumerate(eachtype):
             #filename=filename.split("/")[-1].split(".fastq")[0]
