@@ -32,6 +32,7 @@ def alignReadsWithStarForTrimming(options,logger_proxy,logging_mutex):
             cmd+=" --outSAMtype SAM "
             #cmd+=" --outReadsUnmapped Fastx "
             cmd+=" --outFilterMultimapNmax 500 "
+            cmd+=" --limitOutSAMoneReadBytes 1000000 "
             cmd+=" --outFilterScoreMinOverLread 0.30 --outFilterMatchNminOverLread 0.30 "
             cmd+=" --alignIntronMax 10000 "
             cmd+=" --quantMode TranscriptomeSAM "
