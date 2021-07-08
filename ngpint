@@ -749,7 +749,7 @@ def main():
     with logging_mutex:
         logger_proxy.info("Transcripts with STOP codons in 5 prime UTR detected")
     
-    
+    """
     current_time=time.time()
     runTrimmomaticToTrimOffAdapters(options,logger_proxy,logging_mutex)
     options.record_time["runTrimmomaticToTrimOffAdapters"]=str(convertToDateAndTime(int(time.time()-current_time)))
@@ -781,15 +781,15 @@ def main():
     current_time=time.time()
     reAlignReadsMappedToVector(options)
     options.record_time["reAlignReadsMappedToVector"]=str(convertToDateAndTime(int(time.time()-current_time)))
-    
+    """
     
     current_time=time.time()
-    prepareGenomeFilesForGenomeBrowser(options,logger_proxy,logging_mutex)
+    prepareGenomeFilesForGenomeBrowser(options,logger_proxy,logging_mutex) # Problem in this function check later
     options.record_time["prepareGenomeFilesForGenomeBrowser"]=str(convertToDateAndTime(int(time.time()-current_time)))
     with logging_mutex:
         logger_proxy.info("Generation of files for viewing on genome browser completed")
     
-    
+    return
     current_time=time.time()
     prepareTranscriptomeFiles(options,logger_proxy,logging_mutex)
     options.record_time["prepareTranscriptomeFiles"]=str(convertToDateAndTime(int(time.time()-current_time)))
