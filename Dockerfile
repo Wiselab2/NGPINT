@@ -27,7 +27,7 @@ RUN cd /software/STAR_${STAR_VERSION} && \
 	cd STAR-${STAR_VERSION}/source && \
 	make STAR STARlong
 
-ENV PATH ${PATH}:/software/STAR-${STAR_VERSION}/source
+ENV PATH ${PATH}:/software/STAR_${STAR_VERSION}/STAR-${STAR_VERSION}/bin/Linux_x86_64
 
 # Install Samtools
 ARG SAMTOOLS_VERSION=1.14
@@ -38,16 +38,7 @@ RUN cd /software/samtools_${SAMTOOLS_VERSION} && \
 	cd samtools-${SAMTOOLS_VERSION} && make && make install
 
 # Install Trimmomatic
-RUN apt-get install -y default-jre # relocate to the top
-ARG TRIMMOMATIC_VERSION=0.39
-RUN mkdir -p /software/trimmomatic_${TRIMMOMATIC_VERSION}
-RUN cd /software/trimmomatic_${TRIMMOMATIC_VERSION} && \
-	wget http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-${TRIMMOMATIC_VERSION}.zip -O trimmomatic-${TRIMMOMATIC_VERSION}.zip && \
-	unzip trimmomatic-${TRIMMOMATIC_VERSION}.zip && \
-	mv Trimmomatic-${TRIMMOMATIC_VERSION}/trimmomatic-${TRIMMOMATIC_VERSION}.jar Trimmomatic-${TRIMMOMATIC_VERSION}/trimmomatic.jar && \
-	chmod a+x Trimmomatic-${TRIMMOMATIC_VERSION}/trimmomatic.jar
-
-ENV PATH ${PATH}:/software/trimmomatic_${TRIMMOMATIC_VERSION}/Trimmomatic-${TRIMMOMATIC_VERSION}
+RUN apt-get install -y trimmomatic # relocate to the top
 
 # Install salmon
 RUN apt-get install -y curl libboost-all-dev libcurl4-openssl-dev apt-transport-https # relocate to the top
@@ -67,10 +58,18 @@ RUN pip install ruffus
 
 # Download and install NGPINT
 ARG NGPINT_VERSION=1.0.0
-RUN mkdir -p /software/ngpint_${NGPINT_VERSION}
+RUN mkdir -p /software/ngpint_${NGPINT_VERSION} # to force download
 RUN cd /software/ngpint_${NGPINT_VERSION} && \
 	git clone https://github.com/sagnikbanerjee15/NGPINT.git
 RUN chmod a+x /software/ngpint_${NGPINT_VERSION}/NGPINT/ngpint
 
 ENV PATH ${PATH}:/software/ngpint_${NGPINT_VERSION}/NGPINT
 
+# Download gffread
+ARG GFFREAD_VERSION=0.12.7
+RUN mkdir -p /software/gffread_${GFFREAD_VERSION} # to force download
+RUN cd /software/gffread_${GFFREAD_VERSION} && wget https://github.com/gpertea/gffread/releases/download/v${GFFREAD_VERSION}/gffread-${GFFREAD_VERSION}.Linux_x86_64.tar.gz && \
+	tar xzf gffread-${GFFREAD_VERSION}.Linux_x86_64.tar.gz && \
+	chmod a+x gffread-${GFFREAD_VERSION}.Linux_x86_64/gffread
+
+ENV PATH ${PATH}:/software/gffread_${GFFREAD_VERSION}/gffread-${GFFREAD_VERSION}.Linux_x86_64/
