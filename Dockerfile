@@ -39,6 +39,8 @@ RUN cd /software/samtools_${SAMTOOLS_VERSION} && \
 
 # Install Trimmomatic
 RUN apt-get install -y trimmomatic # relocate to the top
+RUN chmod a+x /usr/share/java/trimmomatic.jar
+ENV PATH ${PATH}:/usr/share/java
 
 # Install salmon
 RUN apt-get install -y curl libboost-all-dev libcurl4-openssl-dev apt-transport-https # relocate to the top
