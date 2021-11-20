@@ -300,9 +300,22 @@ def analyzeCommandLineArguments(options,logger_proxy,logging_mutex):
         cmd="mkdir -p "+options.temp_output_directory+"/star_index_with_vectors_with_transcriptome"
         os.system(cmd)
         
+        # Calculate genome length and number of reference sequences
+        fhr = open(options.genome,"r")
+        num_seq = 0
+        genome_length = 0
+        for line in fhr:
+            if ">" in line:
+                num_seq += 1
+            else:
+                genome_length += len(line.strip())
+                
+        
         cmd="STAR "
         cmd+=" --runThreadN "+str(options.CPU)
         cmd+=" --runMode genomeGenerate "
+        cmd+=" --genomeSAindexNbases " + str( min( 14,math.log2(genome_length)/2 -1 ) )
+        cmd+=" --genomeChrBinNbits "+ str( min( 18, math.log2(genome_length/num_seq)) )
         cmd+=" --genomeDir "+options.temp_output_directory+"/star_index_with_vectors_with_transcriptome"
         cmd+=" --genomeFastaFiles "+options.genome+" "+options.plasmid_sequences+" "+options.vector_sequences
         cmd+=" --sjdbGTFfile "+options.gtf
