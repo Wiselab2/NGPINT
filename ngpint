@@ -779,7 +779,7 @@ def main():
     
     
     current_time=time.time()
-    reAlignReadsMappedToVector(options)
+    reAlignReadsMappedToVector(options,logger_proxy,logging_mutex)
     options.record_time["reAlignReadsMappedToVector"]=str(convertToDateAndTime(int(time.time()-current_time)))
     
     current_time=time.time()
