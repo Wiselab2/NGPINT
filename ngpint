@@ -309,6 +309,9 @@ def analyzeCommandLineArguments(options,logger_proxy,logging_mutex):
         cmd+=" --outTmpDir "+options.temp_output_directory+"/star_index_with_vectors_with_transcriptome.temp "
         cmd+=" > "+options.temp_output_directory+"/star_index_with_vectors_with_transcriptome.output"
         cmd+=" 2> "+options.temp_output_directory+"/star_index_with_vectors_with_transcriptome.error"
+        
+        with logging_mutex:
+            logger_proxy.info(f"Running command {cmd}")
         os.system(cmd)
         
         options.star_genome_index=options.temp_output_directory+"/star_index_with_vectors_with_transcriptome"
