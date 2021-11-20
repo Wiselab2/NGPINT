@@ -349,15 +349,30 @@ def analyzeCommandLineArguments(options,logger_proxy,logging_mutex):
         os.system("mkdir -p "+options.temp_output_directory+"/star_index_transcriptome")
         
         os.system("rm -rf "+options.temp_output_directory+"/star_index_transcriptome.temp ")
+        
+        # Calculate genome length and number of reference sequences
+        fhr = open(options.transcriptome,"r")
+        num_seq = 0
+        genome_length = 0
+        for line in fhr:
+            if ">" in line:
+                num_seq += 1
+            else:
+                genome_length += len(line.strip())
+        
         cmd="STAR "
         cmd+=" --runThreadN "+str(options.CPU)
         cmd+=" --runMode genomeGenerate "
         cmd+=" --genomeDir "+options.temp_output_directory+"/star_index_transcriptome "
         cmd+=" --genomeFastaFiles "+options.transcriptome
         cmd+=" --limitGenomeGenerateRAM 63689134805 "
+        cmd+=" --genomeSAindexNbases " + str( min( 14,math.log2(genome_length)/2 -1 ) )
+        cmd+=" --genomeChrBinNbits "+ str( min( 18, math.log2(genome_length/num_seq)) )
         cmd+=" --outTmpDir "+options.temp_output_directory+"/star_index_transcriptome.temp "
         cmd+=" > "+options.temp_output_directory+"/star_index_transcriptome.output "
         cmd+=" 2> "+options.temp_output_directory+"/star_index_transcriptome.error "
+        with logging_mutex:
+            logger_proxy.info(f"Running command {cmd}")
         os.system(cmd)
         options.transcriptome_index=options.temp_output_directory+"/star_index_transcriptome"
     
