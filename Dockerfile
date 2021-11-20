@@ -5,8 +5,15 @@ ENV TZ=America/New_York
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get -y update
-RUN apt-get -y install git python3 less vim wget time zlib1g zlib1g-dev lzma-dev libncurses5-dev libcurl4-nss-dev liblzma-dev libncursesw5-dev make unzip zip build-essential gcc g++ cmake ca-certificates libbz2-dev xz-utils htop autoconf automake binutils bison flex gettext libtool make patch pkg-config dirmngr gnupg apt-transport-https ca-certificates software-properties-common r-base texlive-latex-base texlive-latex-extra 
+RUN apt-get -y install git python3 less vim wget time zlib1g zlib1g-dev lzma-dev libncurses5-dev libcurl4-nss-dev liblzma-dev libncursesw5-dev make unzip zip build-essential gcc g++ cmake ca-certificates libbz2-dev xz-utils htop autoconf automake binutils bison flex gettext libtool make patch pkg-config dirmngr gnupg apt-transport-https ca-certificates software-properties-common r-base texlive-latex-base texlive-latex-extra python3.8-distutils trimmomatic
+RUN wget https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py
+RUN pip install ruffus
+
 RUN apt-get clean all
+
+# Install Trimmomatic
+RUN chmod a+x /usr/share/java/trimmomatic.jar
+ENV PATH ${PATH}:/usr/share/java
 
 # Install DESeq2
 RUN echo 'local({r <- getOption("repos"); r["CRAN"] <- "http://cran.r-project.org"; options(repos=r)})' > ~/.Rprofile
@@ -34,10 +41,7 @@ RUN cd /software/samtools_${SAMTOOLS_VERSION} && \
 	tar jxf samtools-${SAMTOOLS_VERSION}.tar.bz2 && \
 	cd samtools-${SAMTOOLS_VERSION} && make && make install
 
-# Install Trimmomatic
-RUN apt-get install -y trimmomatic # relocate to the top
-RUN chmod a+x /usr/share/java/trimmomatic.jar
-ENV PATH ${PATH}:/usr/share/java
+
 
 # Install salmon
 RUN apt-get install -y curl libboost-all-dev libcurl4-openssl-dev apt-transport-https # relocate to the top
@@ -51,13 +55,9 @@ RUN cd /software/salmon_${SALMON_VERSION} && \
 
 ENV PATH ${PATH}:/software/salmon_${SALMON_VERSION}/salmon-${SALMON_VERSION}_linux_x86_64/bin
 
-RUN apt-get install -y python3.8-distutils # relocate to the top
-RUN wget https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py
-RUN pip install ruffus
-
 # Download and install NGPINT
 ARG NGPINT_VERSION=1.0.0
-RUN mkdir -p /software/ngpint_${NGPINT_VERSION} # to force download
+RUN mkdir -p /software/ngpint_${NGPINT_VERSION} 
 RUN cd /software/ngpint_${NGPINT_VERSION} && \
 	git clone https://github.com/sagnikbanerjee15/NGPINT.git
 RUN chmod a+x /software/ngpint_${NGPINT_VERSION}/NGPINT/ngpint
