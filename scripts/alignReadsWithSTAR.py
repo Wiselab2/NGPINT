@@ -45,6 +45,8 @@ def alignReadsWithStarForTrimming(options,logger_proxy,logging_mutex):
             else:
                 cmd+=" > "+options.background_sample_STAR_round1_output[file_num]
                 cmd+=" 2> "+options.background_sample_STAR_round1_error[file_num]
+            with logging_mutex:
+                logger_proxy.info(f"Running command {cmd}")
             os.system(cmd)
             
             if num==0:
