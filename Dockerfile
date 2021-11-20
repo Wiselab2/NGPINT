@@ -5,9 +5,6 @@ ENV TZ=America/New_York
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get -y update
-RUN apt-get -y install gnupg
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
-RUN apt-get -y update
 RUN apt-get -y install git python3 less vim wget time zlib1g zlib1g-dev lzma-dev libncurses5-dev libcurl4-nss-dev liblzma-dev libncursesw5-dev make unzip zip build-essential gcc g++ cmake ca-certificates libbz2-dev xz-utils htop autoconf automake binutils bison flex gettext libtool make patch pkg-config dirmngr gnupg apt-transport-https ca-certificates software-properties-common r-base texlive-latex-base texlive-latex-extra 
 RUN apt-get clean all
 
