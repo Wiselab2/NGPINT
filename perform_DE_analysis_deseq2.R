@@ -27,6 +27,7 @@ gm_mean = function(x, na.rm=TRUE){
 args <- commandArgs()
 out_dir<-args[6]
 print(args)
+print(out_dir)
 setwd(out_dir)
 counts_file<-args[7]
 pval_cutoff<-as.double(args[8])
