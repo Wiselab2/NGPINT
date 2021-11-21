@@ -16,7 +16,11 @@ RUN chmod a+x /usr/share/java/trimmomatic.jar
 ENV PATH ${PATH}:/usr/share/java
 
 # Install DESeq2
+<<<<<<< HEAD
 RUN R -e 'BiocManager::install("DESeq2", dependencies=TRUE)'
+=======
+RUN R -e 'BiocManager::install("DESeq2")'
+>>>>>>> 86ddf2192f23b9fc8ccb35a85e9877f6f2007649
 
 # Make directory for installation
 RUN mkdir /software
