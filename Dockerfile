@@ -1,11 +1,11 @@
-FROM ubuntu
+FROM bioconductor/bioconductor_docker:devel
 MAINTAINER Sagnik Banerjee <sagnikbanerjee15@gmail.com>
 
 ENV TZ=America/New_York
 ENV DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get -y update
-RUN apt-get -y install git python3 less vim wget time zlib1g zlib1g-dev lzma-dev libncurses5-dev libcurl4-nss-dev liblzma-dev libncursesw5-dev make unzip zip build-essential gcc g++ cmake ca-certificates libbz2-dev xz-utils htop autoconf automake binutils bison flex gettext libtool make patch pkg-config dirmngr gnupg apt-transport-https ca-certificates software-properties-common r-base texlive-latex-base texlive-latex-extra python3.8-distutils trimmomatic
+RUN apt-get -y install libcurl4-doc libidn11-dev libkrb5-dev libldap2-dev librtmp-dev libssh2-1-dev git python3 curl libboost-all-dev apt-transport-https less vim wget time zlib1g zlib1g-dev lzma-dev libssl-dev libncurses5-dev libxml2-dev libxml2 liblzma-dev libncursesw5-dev make unzip zip build-essential gcc g++ cmake ca-certificates libbz2-dev xz-utils htop autoconf automake binutils bison flex gettext libtool make patch pkg-config dirmngr gnupg apt-transport-https ca-certificates software-properties-common r-base texlive-latex-base texlive-latex-extra python3-distutils trimmomatic
 RUN wget https://bootstrap.pypa.io/get-pip.py && python3 get-pip.py
 RUN pip install ruffus
 
@@ -16,8 +16,7 @@ RUN chmod a+x /usr/share/java/trimmomatic.jar
 ENV PATH ${PATH}:/usr/share/java
 
 # Install DESeq2
-RUN echo 'local({r <- getOption("repos"); r["CRAN"] <- "http://cran.r-project.org"; options(repos=r)})' > ~/.Rprofile
-RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("DESeq2")'
+RUN R -e 'BiocManager::install("DESeq2", dependencies=TRUE)'
 
 # Make directory for installation
 RUN mkdir /software
@@ -44,7 +43,6 @@ RUN cd /software/samtools_${SAMTOOLS_VERSION} && \
 
 
 # Install salmon
-RUN apt-get install -y curl libboost-all-dev libcurl4-openssl-dev apt-transport-https # relocate to the top
 ARG SALMON_VERSION=1.5.2
 RUN mkdir -p /software/salmon_${SALMON_VERSION}
 RUN cd /software/salmon_${SALMON_VERSION} && \
@@ -67,7 +65,8 @@ ENV PATH ${PATH}:/software/ngpint_${NGPINT_VERSION}/NGPINT
 # Download gffread
 ARG GFFREAD_VERSION=0.12.7
 RUN mkdir -p /software/gffread_${GFFREAD_VERSION} # to force download
-RUN cd /software/gffread_${GFFREAD_VERSION} && wget https://github.com/gpertea/gffread/releases/download/v${GFFREAD_VERSION}/gffread-${GFFREAD_VERSION}.Linux_x86_64.tar.gz && \
+RUN cd /software/gffread_${GFFREAD_VERSION} && \
+	wget --no-check-certificate https://github.com/gpertea/gffread/releases/download/v${GFFREAD_VERSION}/gffread-${GFFREAD_VERSION}.Linux_x86_64.tar.gz && \
 	tar xzf gffread-${GFFREAD_VERSION}.Linux_x86_64.tar.gz && \
 	chmod a+x gffread-${GFFREAD_VERSION}.Linux_x86_64/gffread
 
