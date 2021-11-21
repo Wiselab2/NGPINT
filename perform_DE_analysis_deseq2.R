@@ -36,7 +36,7 @@ num_of_replicates<-length(args[12:length(args)])/2
 raw_count <- read.delim(counts_file, header=FALSE, row.names=1)
 countdata <- round(raw_count)
 colSums(countdata)/gm_mean(colSums(countdata))
-colnames(countdata)<-args[9:length(args)]
+colnames(countdata)<-args[12:length(args)]
 
 # Remove all gene which has 0 value in all sample
 all <- apply(countdata, 1, function(x) all(x==0) )
