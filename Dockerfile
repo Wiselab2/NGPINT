@@ -1,4 +1,4 @@
-FROM ubuntu
+FROM bioconductor/bioconductor_docker:devel
 MAINTAINER Sagnik Banerjee <sagnikbanerjee15@gmail.com>
 
 ENV TZ=America/New_York
@@ -16,8 +16,7 @@ RUN chmod a+x /usr/share/java/trimmomatic.jar
 ENV PATH ${PATH}:/usr/share/java
 
 # Install DESeq2
-RUN echo 'local({r <- getOption("repos"); r["CRAN"] <- "http://cran.r-project.org"; options(repos=r)})' > ~/.Rprofile
-RUN R -e 'install.packages("BiocManager"); BiocManager::install(); BiocManager::install("DESeq2")'
+RUN R -e 'BiocManager::install("DESeq2")'
 
 # Make directory for installation
 RUN mkdir /software
