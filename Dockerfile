@@ -53,15 +53,6 @@ RUN cd /software/salmon_${SALMON_VERSION} && \
 
 ENV PATH ${PATH}:/software/salmon_${SALMON_VERSION}/salmon-${SALMON_VERSION}_linux_x86_64/bin
 
-# Download and install NGPINT
-ARG NGPINT_VERSION=1.0.0
-RUN mkdir -p /software/ngpint_${NGPINT_VERSION} 
-RUN cd /software/ngpint_${NGPINT_VERSION} && \
-	git clone https://github.com/sagnikbanerjee15/NGPINT.git
-RUN chmod a+x /software/ngpint_${NGPINT_VERSION}/NGPINT/ngpint
-
-ENV PATH ${PATH}:/software/ngpint_${NGPINT_VERSION}/NGPINT
-
 # Download gffread
 ARG GFFREAD_VERSION=0.12.7
 RUN mkdir -p /software/gffread_${GFFREAD_VERSION} # to force download
@@ -71,3 +62,14 @@ RUN cd /software/gffread_${GFFREAD_VERSION} && \
 	chmod a+x gffread-${GFFREAD_VERSION}.Linux_x86_64/gffread
 
 ENV PATH ${PATH}:/software/gffread_${GFFREAD_VERSION}/gffread-${GFFREAD_VERSION}.Linux_x86_64/
+
+
+# Download and install NGPINT
+ARG NGPINT_VERSION=1.0.0
+RUN mkdir -p /software/ngpint_${NGPINT_VERSION} 
+RUN cd /software/ngpint_${NGPINT_VERSION} && \
+	wget --no-check-certificate https://github.com/sagnikbanerjee15/NGPINT/archive/refs/tags/NGPINTv${NGPINT_VERSION}.tar.gz && \
+	tar -xzf NGPINTv${NGPINT_VERSION}.tar.gz
+RUN chmod a+x /software/ngpint_${NGPINT_VERSION}/NGPINTv${NGPINT_VERSION}/ngpint
+
+ENV PATH ${PATH}:/software/ngpint_${NGPINT_VERSION}/NGPINT

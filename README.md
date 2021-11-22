@@ -8,34 +8,19 @@ This software manual describes how to operate NGPINT to generate a list of poten
 
 ## Downloading NGPINT
 
-```bash
-git clone https://github.com/Wiselab2/NGPINT.git
-cd NGPINT
-gunzip example/*.gz
+NGPINT is released as a docker image and can be obtained from DockerHub.
+
+```
+docker pull sagnikbanerjee15/ngpint:1.0.0
 ```
 
-## Installing dependencies
-
-Users are recommended to execute NGPINT inside a conda environment. This will prevent version clashes between installed softwares and those used by `NGPINT`.
-
-## Installing conda (Please skip if you already have Conda installed)
-
-Download conda environment file (Please select the appropriate and latest anaconda version from https://repo.anaconda.com/archive). For this example, we assume the system is Linux. The same command for downloading and installing should be used for both Linux and Mac.
+You may create your own docker image from the `Dockerfile` locally
 
 ```bash
-wget https://repo.anaconda.com/archive/Anaconda3-2020.02-Linux-x86_64.sh
-bash Anaconda3-2020.02-Linux-x86_64.sh # do not install VS (needs root privileges)
-```
-
-## Creating the NGPINT Environment
-
-```bash
-conda env create -f environment.yml # This will create an environment named NGPINT
-conda activate NGPINT
-echo "export PATH=\$PATH:$(pwd)" >> ~/.bashrc # Add this path permanently to the
-bashrc file
-conda update --all
-cd example
+NGPINT_VERSION=1.0.0
+wget --no-check-certificate https://github.com/sagnikbanerjee15/NGPINT/archive/refs/tags/NGPINTv${NGPINT_VERSION}.tar.gz
+cd NGPINTv{NGPINT_VERSION}
+docker build ngpint:${NGPINT_VERSION=1.0.0} . # Please remember to set proxies if you need to
 ```
 
 # Running NGPINT
