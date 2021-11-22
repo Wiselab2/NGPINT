@@ -25,18 +25,18 @@ gm_mean = function(x, na.rm=TRUE){
 
 # Setup variables
 args <- commandArgs()
-out_dir<-args[6]
+out_dir<-args[8]
 print(args)
 setwd(out_dir)
-counts_file<-args[7]
-pval_cutoff<-as.double(args[8])
-print(args[9:length(args)])
-num_of_replicates<-length(args[9:length(args)])/2
+counts_file<-args[9]
+pval_cutoff<-as.double(args[10])
+print(args[11:length(args)])
+num_of_replicates<-length(args[11:length(args)])/2
 
 raw_count <- read.delim(counts_file, header=FALSE, row.names=1)
 countdata <- round(raw_count)
 colSums(countdata)/gm_mean(colSums(countdata))
-colnames(countdata)<-args[9:length(args)]
+colnames(countdata)<-args[11:length(args)]
 
 # Remove all gene which has 0 value in all sample
 all <- apply(countdata, 1, function(x) all(x==0) )

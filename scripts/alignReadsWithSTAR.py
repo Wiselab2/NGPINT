@@ -45,6 +45,8 @@ def alignReadsWithStarForTrimming(options,logger_proxy,logging_mutex):
             else:
                 cmd+=" > "+options.background_sample_STAR_round1_output[file_num]
                 cmd+=" 2> "+options.background_sample_STAR_round1_error[file_num]
+            with logging_mutex:
+                logger_proxy.info(f"Running command {cmd}")
             os.system(cmd)
             
             if num==0:
@@ -57,6 +59,8 @@ def alignReadsWithStarForTrimming(options,logger_proxy,logging_mutex):
                 cmd+=options.background_sample_STAR_prefix_round1[file_num]+"Log.progress.out "
                 cmd+=options.background_sample_STAR_prefix_round1[file_num]+"SJ.out.tab "
                 cmd+=options.background_sample_STAR_round1_output[file_num]
+            with logging_mutex:
+                logger_proxy.info(f"Running command {cmd}")
             os.system(cmd)
             with logging_mutex:
                 logger_proxy.info("STAR round1 mapping for "+filename+" completed")
@@ -67,7 +71,7 @@ def alignReadsWithStarForTrimming(options,logger_proxy,logging_mutex):
     os.system(cmd)
 
 
-def reAlignReadsMappedToVector(options):
+def reAlignReadsMappedToVector(options,logger_proxy,logging_mutex):
     """
     Selects fusion reads which are not present in the transcriptome file
     and realign those to the genome and update both genome and
@@ -184,6 +188,8 @@ def reAlignReadsMappedToVector(options):
                 cmd+=" > "+options.background_sample_STAR_round2_output[file_num]
                 cmd+=" 2> "+options.background_sample_STAR_round2_error[file_num]
             #print(cmd)
+            with logging_mutex:
+                logger_proxy.info(f"Running command {cmd}")
             os.system(cmd)
             #print(cmd)
             #continue
